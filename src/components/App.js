@@ -7,6 +7,7 @@ import HomePage from "./HomePage";
 import SessionsTimes from "./SessionsTimes";
 import Seats from "./Seats";
 import OrderData from "./OrderData";
+import LoginPage from "./LoginPage"
 
 import "./../css/reset.css"
 import "./../css/style.css"
@@ -23,7 +24,8 @@ function App() {
         <BrowserRouter>
             <Header returnButton={returnButton} />
             <Routes>
-                <Route path="/" element={<HomePage setReturnButton={setReturnButton} />}></Route>
+                <Route exact path="/" element={<LoginPage />} />
+                <Route path="/homePage" element={<HomePage setReturnButton={setReturnButton} />}></Route>
                 <Route path="/filme/:idFilme" element={<SessionsTimes setNumberOfSeat={setNumberOfSeat} numberOfSeat={numberOfSeat} />}></Route>
                 <Route path="/assentos/:idSessao" element={<Seats orderData={orderData} setOrderData={setOrderData} setReturnButton={setReturnButton} numberOfSeat={numberOfSeat}/>}></Route>
                 <Route path="/sucesso" element={<OrderData orderData={orderData} setOrderData={setOrderData}/>}></Route>
