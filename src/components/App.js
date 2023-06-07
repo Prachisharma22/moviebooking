@@ -18,14 +18,14 @@ function App() {
 
     const [orderData, setOrderData] = useState("")
     const [returnButton, setReturnButton] = useState("button-off")
-
+    const [numberOfSeat, setNumberOfSeat] = useState(1)
     return (
         <BrowserRouter>
             <Header returnButton={returnButton} />
             <Routes>
                 <Route path="/" element={<HomePage setReturnButton={setReturnButton} />}></Route>
-                <Route path="/filme/:idFilme" element={<SessionsTimes />}></Route>
-                <Route path="/assentos/:idSessao" element={<Seats orderData={orderData} setOrderData={setOrderData} setReturnButton={setReturnButton}/>}></Route>
+                <Route path="/filme/:idFilme" element={<SessionsTimes setNumberOfSeat={setNumberOfSeat} numberOfSeat={numberOfSeat} />}></Route>
+                <Route path="/assentos/:idSessao" element={<Seats orderData={orderData} setOrderData={setOrderData} setReturnButton={setReturnButton} numberOfSeat={numberOfSeat}/>}></Route>
                 <Route path="/sucesso" element={<OrderData orderData={orderData} setOrderData={setOrderData}/>}></Route>
             </Routes>
         </BrowserRouter>

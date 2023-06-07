@@ -1,13 +1,20 @@
-import { Link } from 'react-router-dom';
+import { Button } from 'reactstrap';
 
-function SessionTime({weekday, date, showtimes, setSessionData}) {
+function SessionTime({weekday, date, showtimes, setSessionData, setIsOpen}) {
+
+    const onClickHandler = (time) => {
+        setSessionData({weekday: weekday, time: time})
+        setIsOpen(true)
+    }
+
     return (
         <>
             <p>{weekday} - {date}</p>
             <div className="sessions__times">
-                    {showtimes.map((time) => <Link key={time.id} to={`/assentos/${time.id}`}>
-                        <div className="session__time" onClick={()=> setSessionData({weekday: weekday, time: time.name})}><span>{time.name}</span></div>
-                        </Link>)}
+                    {showtimes.map((time) => <Button 
+                         className="session__time" onClick={()=> onClickHandler(time)}>
+                            <span>{time.name}</span>
+                        </Button>)}
             </div>
         </>
     );

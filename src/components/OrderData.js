@@ -10,25 +10,26 @@ function OrderData({orderData, setOrderData}) {
     return (Object.keys(orderData).length !== 0) ? (
         <OrderDataScreen>
             <div className="sucess">
-                <h1>Pedido feito com sucesso</h1>
+                <h1>Order made with success</h1>
             </div>
             <div className="data">
-                <p>Filme e sessão</p>
+                <p>Film and session</p>
                 <p>{orderData.movie}</p>
                 <p>{orderData.data} {orderData.time}</p>
             </div>
             <div className="data">
-                <p>Ingressos</p>
-                {orderData.tickets.map((ticket)=> <p key={ticket}>Assento {ticket}</p>)}
+                <p>Tickets</p>
+                {orderData.tickets.map((ticket)=> <p key={ticket}>Seat {ticket}</p>)}
             </div>
             <div className="data">
-                <p>Comprador</p>
-                <p>Nome: {orderData.name}</p>
-                <p>CPF: {orderData.cpf}</p>
+                <p>Buyer</p>
+                <p>Name: {orderData.name}</p>
+                <p>Cost: {orderData.tickets.length * 150}</p>
+
             </div>
             <div className="button_align">
                 <Link to="/">
-                    <button onClick={() => setOrderData()}>Voltar para Home</button>
+                    <button onClick={() => setOrderData()}>Back to Home</button>
                 </Link>
             </div>
         </OrderDataScreen>

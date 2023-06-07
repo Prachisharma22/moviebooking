@@ -2,20 +2,21 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-
 import SessionTime from './SessionTime';
 import Footer from './Footer';
 
 import Loading from './../assets/loading.gif'
+import SeatNumberModal from './SeatNumberModal';
+import { isEmpty } from 'lodash'
 
 
-function SessionsTimes() {
-
+function SessionsTimes({setNumberOfSeat, numberOfSeat}) {
     const {idFilme} = useParams();
     const [sessions, setSessions] = useState([])
     const [sessionData, setSessionData] = useState({})
-    
+    const [isOpen, setIsOpen] = useState(false)
 
+    const weekdays = { 'Domingo': 'Sunday', 'Segunda-feira': 'Monday', 'Terça-feira': 'Tuesday', 'Quarta-feira': 'Wednesday','Quinta-feira': 'Thursday', 'Sexta-feira': 'Friday','Sábado': 'Saturday' };
 
     useEffect(() => {
         const promise = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/movies/${idFilme}/showtimes`);
@@ -27,20 +28,27 @@ function SessionsTimes() {
     },[idFilme]);
 
 
-    return sessions.length !== 0 ? (
+    return (
+        <>
+        {sessions.length !== 0 ? (
         <>
             <SessionsTimesScreen>
-                <h1>Selecione o horário</h1>
+                <h1>Select Time</h1>
                 <div className="sessions">
-                {sessions.days.map((session) => <SessionTime key={session.id} weekday={session.weekday} date={session.date}
-                showtimes={session.showtimes} setSessionData={setSessionData} />)}
+                {sessions.days.map((session, index) => <SessionTime key={session.id} weekday={weekdays[session.weekday]} date={session.date}
+                showtimes={session.showtimes} setSessionData={setSessionData} setIsOpen={setIsOpen} />)}
                 </div>
             </SessionsTimesScreen>
             <Footer posterURL={sessions.posterURL} title={sessions.title} sessionData={sessionData}/>
+            {!isEmpty(sessionData) && <SeatNumberModal isOpen={isOpen} setIsOpen={setIsOpen} setNumberOfSeat={setNumberOfSeat} timeId={sessionData.time.id} numberOfSeat={numberOfSeat} />}
+
         </>
     ) : <LoadingScreen>
             <img src={Loading} alt="loading" />
-        </LoadingScreen>
+        </LoadingScreen>}
+    </>
+    )
+
 }
 
 export default SessionsTimes;

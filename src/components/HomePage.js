@@ -26,7 +26,7 @@ function HomePage({setReturnButton}) {
     return movies.length !== 0 ? 
     (
         <HomeScreen>
-            <h1>Selecione o filme</h1>
+            <h1>Select the movies</h1>
             <div className='movies-list'>
                 {movies.map((movie) => <Movie key={movie.id} posterURL={movie.posterURL} idFilme={movie.id} setReturnButton={setReturnButton}/>)} 
             </div>

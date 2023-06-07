@@ -15,7 +15,7 @@ const navigate = useNavigate();
     return (
             <Cabecalho>
                 <ion-icon name="arrow-back-circle-outline" id={`${returnButton}`} onClick={goBack}></ion-icon>
-                <h1>CINEFLEX</h1>
+                <h1>PVR Superplex</h1>
             </Cabecalho>
     );
 }

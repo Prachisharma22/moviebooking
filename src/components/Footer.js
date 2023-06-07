@@ -15,7 +15,7 @@ function Footer({title, posterURL, sessionData}) {
             </div>
             <div>
                 <p>{title}</p>
-                <p>{sessionData.weekday} - {sessionData.time}</p>
+                <p>{sessionData.weekday} - {sessionData.time.name}</p>
             </div>
         </Rodape>
 }

@@ -8,12 +8,11 @@ import Footer from './Footer';
 import Seat from './Seat';
 
 import Loading from './../assets/loading.gif'
-import { cpfMask } from './../utils/mask'
 
-
-function Seats({setOrderData, setReturnButton}) {
+function Seats({setOrderData, setReturnButton, numberOfSeat}) {
 
     const navigate = useNavigate();
+    const weekdays = { 'Domingo': 'Sunday', 'Segunda-feira': 'Monday', 'Terça-feira': 'Tuesday', 'Quarta-feira': 'Wednesday','Quinta-feira': 'Thursday', 'Sexta-feira': 'Friday','Sábado': 'Saturday' };
 
     function bookSeats(e) {
         e.preventDefault();
@@ -21,6 +20,7 @@ function Seats({setOrderData, setReturnButton}) {
         if(chosenSeats.length === 0) {
             alert('Select the seats!')
         } else {
+            console.log('numberSeat', numberSeat)
             setOrderData({movie: seats.movie.title, day: seats.day.weekday, data: seats.day.date,time: seats.name, name: inputData.name, cpf: inputData.cpf, tickets: [...numberSeat]})
             const URL_RESERVATION_SEATS = "https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many"
     
@@ -28,7 +28,7 @@ function Seats({setOrderData, setReturnButton}) {
                 {
                     ids: [...chosenSeats],
                     name: inputData.name,
-                    cpf: inputData.cpf.match(/\d/g).join("") //enviar apenas números CPF
+                    cpf: '232323' //enviar apenas números CPF
                 })
             
             promise.then((response) => {
@@ -54,43 +54,41 @@ function Seats({setOrderData, setReturnButton}) {
             setSeats(data);
         });
         promise.catch((error) => {console.log(error.response);})
+
     },[idSessao]);
 
-
+    
     return Object.keys(seats).length !== 0 ? (
         <>
             <SeatsScreen>
-                    <h1>Selecione o(s) assento(s)</h1>
+                    <h1>Please Select Seats</h1>
                     <div className="seats">
-                        {seats.seats.map((seat) => <Seat key={seat.id} id = {seat.id} number={seat.name} isAvailable={seat.isAvailable} chosenSeats={chosenSeats} setChosenSeats={setChosenSeats} numberSeat={numberSeat} setNumberSeat={setNumberSeat}/>)}
+                        {seats.seats.map((seat) => <Seat key={seat.id} id = {seat.id} number={seat.name} isAvailable={seat.isAvailable} chosenSeats={chosenSeats} setChosenSeats={setChosenSeats} numberSeat={numberSeat} setNumberSeat={setNumberSeat} setSeats={setSeats} seats={seats} numberOfSeat={numberOfSeat} />)}
                     </div>
                     <div className="legend">
                         <div className="legend__marker">
                             <div className="circle__selected"></div>
-                            <p>Selecionado</p>
+                            <p>Selected</p>
                         </div>
                         <div className="legend__marker">
                             <div className="circle__available"></div>
-                            <p>Disponível</p>
+                            <p>Vacant</p>
                         </div>
                         <div className="legend__marker">
                             <div className="circle__unavailable"></div>
-                            <p>Indisponível</p>
+                            <p>Booked</p>
                         </div>         
                     </div>
                     <Form onSubmit={bookSeats} >
                         <div className="container">
-                            <label>Nome do comprador:<input type="text" placeholder="Digite seu nome..." required value={inputData.nome} onChange={(e) => setInputData({...inputData, name: e.target.value})}></input></label>
-                        </div>
-                        <div className="container">
-                        <label>CPF do comprador:<input type="text" placeholder="Digite seu CPF..." required value={inputData.cpf} maxLength='14' onChange={(e) => setInputData({...inputData, cpf: cpfMask(e.target.value)})}></input></label>
+                            <label>Buyer Name<input type="text" placeholder="Type your name..." required value={inputData.nome} onChange={(e) => setInputData({...inputData, name: e.target.value})}></input></label>
                         </div>
                         <div className="submit">
-                            <button type="submit">Reservar assento(s)</button>
+                            <button type="submit">Reserve seat(s)</button>
                         </div>
                     </Form>
             </SeatsScreen>
-            <Footer posterURL={seats.movie.posterURL} title={seats.movie.title} sessionData={{weekday: seats.day.weekday, time: seats.name}} />
+            <Footer posterURL={seats.movie.posterURL} title={seats.movie.title} sessionData={{weekday: weekdays[seats.day.weekday], time: seats}} />
         </>
     ) :  <LoadingScreen>
             <img src={Loading} alt="loading" />
